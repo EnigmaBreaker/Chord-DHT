@@ -50,7 +50,7 @@ class Node:
 				# print(self.finger[i][1].key, self.key, key, self.n)
 				if(inRange(self.finger[i][1].key, self.key, key, self.n)):
 					return self.finger[i][1].findSuccessor(key)
-			return self.successor
+			return self
 
 
 
@@ -73,15 +73,22 @@ class Node:
 
 	def updateOthers(self):
 		for i in range(self.m):
-			pred = self.findSuccessor(self.key - 2**i).predecessor
+			pred = self.findSuccessor((self.key - 2**i) % self.n)
+
+			if(pred.key != (self.key - 2**i) % self.n):
+				pred = pred.predecessor
+
+			print("Updating Others. {} {} {}".format(self.key, (self.key - 2**i) % self.n, pred.key))
 			pred.updateFingerTable(self, i)
+
 
 	def updateFingerTable(self, n, i):
 		print("Printing Finger table: {}, {}, {}".format(n.key, self.key, self.finger[i][1].key))
 		# if(self.finger[i][1].key == n.key):
 		# 	self.finger[i][1] = n
-			# self.predecessor.updateFingerTable(n, i)
-			
+		# 	if(self.predecessor.key != self.key):
+		# 		self.predecessor.updateFingerTable(n, i)
+
 		if(inRange(n.key, self.key, self.finger[i][1].key, self.n)):
 			self.finger[i][1] = n
 			self.predecessor.updateFingerTable(n, i)
