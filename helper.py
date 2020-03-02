@@ -8,6 +8,8 @@ def addHI(h, i, m):
 
 def inRange(key, first, last, n):
 	if(last > first):
+		if(key == None):
+			print(first, key, last)
 		return first < key < last
 
 	last += n

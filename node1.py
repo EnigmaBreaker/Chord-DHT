@@ -78,12 +78,12 @@ class Node:
 			if(pred.key != (self.key - 2**i) % self.n):
 				pred = pred.predecessor
 
-			print("Updating Others. {} {} {}".format(self.key, (self.key - 2**i) % self.n, pred.key))
+			# print("Updating Others. {} {} {}".format(self.key, (self.key - 2**i) % self.n, pred.key))
 			pred.updateFingerTable(self, i)
 
 
 	def updateFingerTable(self, n, i):
-		print("Printing Finger table: {}, {}, {}".format(n.key, self.key, self.finger[i][1].key))
+		# print("Printing Finger table: {}, {}, {}".format(n.key, self.key, self.finger[i][1].key))
 		# if(self.finger[i][1].key == n.key):
 		# 	self.finger[i][1] = n
 		# 	if(self.predecessor.key != self.key):
@@ -100,7 +100,7 @@ class Node:
 	def joinChord(self):
 		self.key = hextoint(hmac.new(encode("my-secret"), msg=encode("{}, {}".format(self.x, self.y)), digestmod=sha1).hexdigest()[:self.m//4])
 
-		print(self.key)
+		# print(self.key)
 
 		nearesetNode = self.internet.getNearestNode(self.x, self.y)
 		if(nearesetNode == None):
@@ -110,7 +110,10 @@ class Node:
 
 	def routeMsg(self, key, value):
 		nextone = self.findSuccessor(key)
+		if key in nextone.dic:
+			return False
 		nextone.dic[key] = value
+		return True
 
 	def lookup(self, key):
 		nextone = self.findSuccessor(key)
