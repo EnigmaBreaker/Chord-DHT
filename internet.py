@@ -5,9 +5,9 @@ class Internet:
 	def __init__(self, n):
 		if(n % 2 == 0):
 			n += 1
-		self.grid = [[None for x in range(n)] for y in range(n)]
+		self.grid = [[None for x in range(n)] for y in range(50)]
 		self.ip_data = {}
-		self.n = n
+		self.n = 50
 
 	def __scanring(self, x, y, i):
 		x1 = (x - i) % self.n
@@ -69,7 +69,7 @@ class Internet:
 			y = curr%self.n
 			if (x, y) not in self.ip_data:
 				break
-
+		print(x, y)
 		self.ip_data[(x, y)] = node
 		return x, y
 

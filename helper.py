@@ -7,16 +7,11 @@ def addHI(h, i, m):
 	return hex((hextoint(h) + i) % 2**m)[2:]	
 
 def inRange(key, first, last, n):
-	key = hextoint(key)
-	first = hextoint(first)
-	last = hextoint(last)
-	n = hextoint(n)
-
 	if(last > first):
 		return first < key < last
 
 	last += n
-	if(n > key):
+	if(first > key):
 		key += n
 
 	return first < key < last
