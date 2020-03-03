@@ -25,8 +25,6 @@ class Node:
 		print()
 		print()
 
-
-
 	def connectToInternet(self, internet):
 		self.internet = internet
 		self.x, self.y = self.internet.getIp(self)
@@ -36,7 +34,7 @@ class Node:
 		self.predecessor = self
 		self.finger = [[((2**i + self.key) % self.n), self] for i in range(self.m)]
 
-	def findSuccessor(self, key):
+	def findSuccessor(self, key, hops):
 		# print(key, self.key, self.successor.key, self.n)
 		if(self.key == key):
 			return self
@@ -49,12 +47,13 @@ class Node:
 			for i in range(self.m - 1, -1, -1):
 				# print(self.finger[i][1].key, self.key, key, self.n)
 				if(inRange(self.finger[i][1].key, self.key, key, self.n)):
-					return self.finger[i][1].findSuccessor(key)
+					hops.append(self.finger[i][1].key)
+					return self.finger[i][1].findSuccessor(key, hops)
 			return self
 
 	def initFingerTable(self, node):
 		self.finger = [[((2**i + self.key) % self.n), None] for i in range(self.m)]
-		self.finger[0][1] = node.findSuccessor(self.key)
+		self.finger[0][1] = node.findSuccessor(self.key, [])
 		self.successor = self.finger[0][1]
 		self.predecessor = self.successor.predecessor
 		self.predecessor.successor = self
@@ -66,11 +65,11 @@ class Node:
 			elif(inRange(self.finger[i][0], self.key, self.successor.key, self.n)):
 				self.finger[i][1] = self.successor
 			else:
-				self.finger[i][1] = node.findSuccessor(self.finger[i][0])
+				self.finger[i][1] = node.findSuccessor(self.finger[i][0], [])
 
 	def updateOthers(self):
 		for i in range(self.m):
-			pred = self.findSuccessor((self.key - 2**i) % self.n)
+			pred = self.findSuccessor((self.key - 2**i) % self.n, [])
 
 			if(pred.key != (self.key - 2**i) % self.n):
 				pred = pred.predecessor
@@ -106,16 +105,18 @@ class Node:
 			self.join(nearesetNode)
 
 	def routeMsg(self, key, value):
-		nextone = self.findSuccessor(key)
+		hops = []
+		nextone = self.findSuccessor(key, hops)
 		if key in nextone.dic:
-			return False
+			return None
 		nextone.dic[key] = value
-		return True
+		return hops
 
 	def lookup(self, key):
-		nextone = self.findSuccessor(key)
+		hops = []
+		nextone = self.findSuccessor(key, hops)
 		if key in nextone.dic:
-			return nextone.dic[key]
+			return nextone.dic[key], hops
 		return None
 
 	def deleteNode(self):
@@ -126,6 +127,6 @@ class Node:
 
 	def reUpdateFingerTable(self):
 		for x in self.finger:
-			x[1] = self.findSuccessor(x[0])
+			x[1] = self.findSuccessor(x[0], [])
 
 	

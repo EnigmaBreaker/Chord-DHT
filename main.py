@@ -8,6 +8,7 @@ def test1(chord, nums):
 	i = 0
 	while(i < nums):
 		key = chord.addMsg(i)
+		# print(key)
 		if(key == None):
 			print("Duplicate key")
 		else:
@@ -23,7 +24,7 @@ def test1(chord, nums):
 	# 		keys.append(key)
 
 	for i in range(nums):
-		if(chord.lookup(keys[i]) == i):
+		if(chord.lookup(keys[i][0])[0] == i):
 			# print("Lookup: {} {} {}".format(keys[i], i, True))
 			pass
 		else:

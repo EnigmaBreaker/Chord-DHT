@@ -16,19 +16,6 @@ class Chord:
 	def print_chord(self):
 		minkey = None
 
-		# for x in self.internet.ip_data:
-		# 	if(minkey == None):
-		# 		minkey = self.internet.ip_data[x]
-		# 	curr = self.internet.ip_data[x]
-		# 	print(curr)
-		# 	if(curr.key < minkey.key):
-		# 		minkey = curr
-		# print("Printing")
-		# for i in range(self.n):
-		# 	# print(minkey.key, minkey.successor.key)
-		# 	minkey.printNode()
-		# 	minkey = minkey.successor
-
 		for x in self.internet.ip_data:
 			self.internet.ip_data[x].printNode()
 
@@ -45,7 +32,7 @@ class Chord:
 		random_node = self.internet.ip_data[random_key]
 		output = random_node.routeMsg(key, value)
 		if(output):
-			return key
+			return key, output
 		return None
 
 	def lookup(self, key):
